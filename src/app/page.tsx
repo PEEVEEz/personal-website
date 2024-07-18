@@ -1,3 +1,5 @@
+import "server-only";
+
 import Image from "next/image";
 import ProfilePicture from "../assets/pfp.webp";
 import { MaterialSymbolsAlternateEmail } from "@/components/icons/email";
@@ -10,7 +12,23 @@ import { AkarIconsTypescriptFill } from "@/components/icons/typescript";
 import { AkarIconsReactFill } from "@/components/icons/react";
 import { SimpleIconsLua } from "@/components/icons/lua";
 
-export default function Home() {
+export default async function Home() {
+  const response = await fetch(
+    `https://api.testaustime.fi/users/PEEVEE/activity/data?min_duration=1&from=${
+      Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60
+    }`,
+    {
+      headers: {
+        Authorization: `Bearer tZhnhJe17UBiCXdk1J20EDs4RAKWnAky`,
+      },
+    }
+  );
+
+  const data: { duration: number }[] = await response.json();
+  const totalSeconds = data.reduce((sum, item) => sum + item.duration, 0);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+
   return (
     <main>
       <div className="mt-10 text-neutral-100 space-y-5">
@@ -49,7 +67,9 @@ export default function Home() {
               <div className="flex items-center gap-1">
                 <MaterialSymbolsNestClockFarsightAnalogOutline className="size-5" />
                 <div>Coding Time (Last 7 days):</div>
-                <div>3 hours 10 minutes</div>
+                <div>
+                  {hours} hours {minutes} minutes
+                </div>
               </div>
             </div>
           </div>
