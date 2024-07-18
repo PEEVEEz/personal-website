@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import { Mukta } from "next/font/google";
+import "../assets/globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Mukta({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <div className="mx-auto max-w-4xl">{children}</div>
+      </body>
     </html>
   );
 }
